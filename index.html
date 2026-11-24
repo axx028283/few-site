@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b0b0d">
+  <meta name="description" content="Acompanhe campeonatos, equipes, jogadores, partidas e estatísticas oficiais da FEW.">
+  <title>FEW — Federação Egípcia de WPS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="config.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+
+  <header class="site-header">
+    <a class="brand" href="#inicio" data-tab="inicio" aria-label="FEW início">
+      <span class="brand-mark">☥</span>
+      <span><b>FEW</b><small>FEDERAÇÃO EGÍPCIA DE WPS</small></span>
+    </a>
+
+    <nav class="desktop-tabs" id="desktopTabs" role="tablist" aria-label="Seções do portal">
+      <button type="button" class="tab-btn active" role="tab" aria-selected="true" data-tab="inicio">Início</button>
+      <button type="button" class="tab-btn" role="tab" aria-selected="false" data-tab="campeonatos">Campeonatos</button>
+      <button type="button" class="tab-btn" role="tab" aria-selected="false" data-tab="jogos">Jogos</button>
+      <button type="button" class="tab-btn" role="tab" aria-selected="false" data-tab="equipes">Equipes</button>
+      <button type="button" class="tab-btn" role="tab" aria-selected="false" data-tab="jogadores">Jogadores</button>
+      <button type="button" class="tab-btn" role="tab" aria-selected="false" data-tab="estatisticas">Estatísticas</button>
+    </nav>
+
+    <div class="header-right">
+      <span class="live-dot"></span>
+      <span id="connectionLabel">Conectando</span>
+      <button type="button" class="icon-button" id="refreshBtn" title="Atualizar dados" aria-label="Atualizar dados">↻</button>
+    </div>
+  </header>
+
+  <main class="tab-viewport">
+    <!-- ABA INÍCIO -->
+    <section class="tab-panel active" id="tab-inicio" role="tabpanel" aria-labelledby="Início">
+      <div class="hero">
+        <div class="hero-copy">
+          <div class="eyebrow"><span></span> O PORTAL OFICIAL DA FEDERAÇÃO</div>
+          <h1>O jogo é decidido<br>em campo. <em>A história</em><br>fica aqui.</h1>
+          <p>Acompanhe campeonatos, equipes, elencos, resultados e estatísticas em abas rápidas no celular ou no desktop.</p>
+          <div class="hero-actions">
+            <button type="button" class="button button-gold" data-go-tab="campeonatos">Explorar campeonatos <span>↗</span></button>
+            <button type="button" class="text-link" data-go-tab="jogos">Ver resultados e jogos <span>→</span></button>
+          </div>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="sun-disc"></div>
+          <div class="hero-ring ring-a"></div>
+          <div class="hero-ring ring-b"></div>
+          <div class="hero-emblem">☥</div>
+          <div class="hero-caption">DISCIPLINA · COMPETIÇÃO · GLÓRIA</div>
+        </div>
+        <div class="hero-bottom"><span>EST. FEW</span><span>WPS COMPETITIVE LEAGUE</span><span>01 — 03</span></div>
+      </div>
+
+      <div class="stats-strip" aria-label="Resumo da federação">
+        <button type="button" class="stat-tile" data-go-tab="campeonatos"><strong id="statChamps">—</strong><span>CAMPEONATOS</span></button>
+        <button type="button" class="stat-tile" data-go-tab="equipes"><strong id="statTeams">—</strong><span>EQUIPES</span></button>
+        <button type="button" class="stat-tile" data-go-tab="jogadores"><strong id="statPlayers">—</strong><span>JOGADORES</span></button>
+        <button type="button" class="stat-tile" data-go-tab="jogos"><strong id="statMatches">—</strong><span>PARTIDAS</span></button>
+      </div>
+
+      <div class="overview-grid">
+        <div class="overview-card">
+          <div class="overview-head">
+            <div><small>ÚLTIMOS MOVIMENTOS</small><h3>Jogos em destaque</h3></div>
+            <button type="button" class="mini-link" data-go-tab="jogos">Abrir aba Jogos →</button>
+          </div>
+          <div id="homeRecentMatches" class="compact-list"></div>
+        </div>
+
+        <div class="overview-card">
+          <div class="overview-head">
+            <div><small>LIDERANÇA INDIVIDUAL</small><h3>Artilharia</h3></div>
+            <button type="button" class="mini-link" data-go-tab="estatisticas">Ver estatísticas →</button>
+          </div>
+          <div id="homeTopScorers" class="leader-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABA CAMPEONATOS -->
+    <section class="tab-panel" id="tab-campeonatos" role="tabpanel" aria-labelledby="Campeonatos">
+      <div class="section">
+        <div class="section-heading">
+          <div>
+            <div class="eyebrow">DISPUTAS EM DESTAQUE</div>
+            <h2>Campeonatos</h2>
+            <p>Competições oficiais, formatos, fases e andamento.</p>
+          </div>
+          <div class="heading-tools">
+            <span class="section-count" id="champCount">0 COMPETIÇÕES</span>
+            <select id="champFilter" aria-label="Filtrar campeonatos">
+              <option value="all">Todos</option>
+              <option value="active">Em andamento</option>
+              <option value="finished">Finalizados</option>
+            </select>
+          </div>
+        </div>
+        <div class="champ-grid" id="champGrid"><div class="loading-card">Carregando campeonatos...</div></div>
+      </div>
+    </section>
+
+    <!-- ABA JOGOS -->
+    <section class="tab-panel" id="tab-jogos" role="tabpanel" aria-labelledby="Jogos">
+      <div class="section section-dark">
+        <div class="section-heading">
+          <div>
+            <div class="eyebrow">ACOMPANHE A COMPETIÇÃO</div>
+            <h2>Central de jogos</h2>
+            <p>Resultados finalizados e confrontos agendados por campeonato.</p>
+          </div>
+          <div class="heading-tools">
+            <select id="matchStatusFilter" aria-label="Filtrar por status da partida">
+              <option value="all">Todos os status</option>
+              <option value="done">Finalizados</option>
+              <option value="pending">Agendados</option>
+            </select>
+            <select id="matchChampFilter" aria-label="Filtrar jogos por campeonato">
+              <option value="all">Todos os campeonatos</option>
+            </select>
+          </div>
+        </div>
+        <div class="matches-layout">
+          <div class="matches-column">
+            <div class="subhead"><span>PARTIDAS</span><span id="matchSummary">—</span></div>
+            <div id="matchList" class="match-list"><div class="empty-state">Carregando partidas...</div></div>
+          </div>
+          <aside class="recent-panel">
+            <div class="panel-title"><span class="gold-line"></span><div><small>DESTAQUES</small><h3>Artilharia</h3></div></div>
+            <div id="topScorers" class="leader-list"></div>
+            <div class="panel-divider"></div>
+            <div class="panel-title"><span class="gold-line"></span><div><small>VISÃO GERAL</small><h3>Assistências</h3></div></div>
+            <div id="topAssists" class="leader-list"></div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABA EQUIPES -->
+    <section class="tab-panel" id="tab-equipes" role="tabpanel" aria-labelledby="Equipes">
+      <div class="section">
+        <div class="section-heading">
+          <div>
+            <div class="eyebrow">QUEM ENTRA EM CAMPO</div>
+            <h2>Equipes</h2>
+            <p>Toque em uma equipe para ver elenco, números e partidas.</p>
+          </div>
+          <div class="heading-tools">
+            <input id="teamSearch" type="search" placeholder="Buscar equipe..." aria-label="Buscar equipe">
+          </div>
+        </div>
+        <div class="team-grid" id="teamGrid"><div class="loading-card">Carregando equipes...</div></div>
+      </div>
+    </section>
+
+    <!-- ABA JOGADORES -->
+    <section class="tab-panel" id="tab-jogadores" role="tabpanel" aria-labelledby="Jogadores">
+      <div class="section player-section">
+        <div class="section-heading">
+          <div>
+            <div class="eyebrow">TALENTO EM DESTAQUE</div>
+            <h2>Jogadores</h2>
+            <p>Atletas inscritos, equipes, posições, gols e assistências.</p>
+          </div>
+          <div class="heading-tools">
+            <span class="section-count" id="playerCount">0 JOGADORES</span>
+            <input id="playerSearch" type="search" placeholder="Buscar jogador ou time..." aria-label="Buscar jogador">
+          </div>
+        </div>
+        <div id="playerGrid" class="player-grid"><div class="empty-state">Carregando jogadores...</div></div>
+      </div>
+    </section>
+
+    <!-- ABA ESTATÍSTICAS -->
+    <section class="tab-panel" id="tab-estatisticas" role="tabpanel" aria-labelledby="Estatísticas">
+      <div class="section section-dark">
+        <div class="section-heading">
+          <div>
+            <div class="eyebrow">NÚMEROS DA COMPETIÇÃO</div>
+            <h2>Estatísticas</h2>
+            <p>Classificação geral, aproveitamento e desempenho ofensivo.</p>
+          </div>
+          <div class="heading-tools">
+            <select id="statsChampFilter" aria-label="Campeonato das estatísticas">
+              <option value="all">Todos os campeonatos</option>
+            </select>
+          </div>
+        </div>
+        <div class="stats-content">
+          <div class="table-card">
+            <div class="table-title">
+              <div><small>CLASSIFICAÇÃO</small><h3 id="tableTitle">Tabela geral</h3></div>
+              <span class="table-icon">▤</span>
+            </div>
+            <div class="table-scroll">
+              <table>
+                <thead>
+                  <tr><th>#</th><th>Equipe</th><th>J</th><th>V</th><th>E</th><th>D</th><th>SG</th><th>PTS</th></tr>
+                </thead>
+                <tbody id="standingsBody">
+                  <tr><td colspan="8" class="table-empty">Aguardando dados do campeonato.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="performance-card">
+            <small>DESEMPENHO OFENSIVO</small>
+            <h3>Gols por equipe</h3>
+            <div id="teamGoals" class="bar-list"><div class="table-empty">Aguardando dados.</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- BARRA INFERIOR MOBILE -->
+  <nav class="bottom-nav" id="bottomNav" aria-label="Navegação inferior">
+    <button type="button" class="bottom-btn active" data-tab="inicio"><span>☥</span><small>Início</small></button>
+    <button type="button" class="bottom-btn" data-tab="campeonatos"><span>🏆</span><small>Camps</small></button>
+    <button type="button" class="bottom-btn" data-tab="jogos"><span>⚽</span><small>Jogos</small></button>
+    <button type="button" class="bottom-btn" data-tab="equipes"><span>🛡</span><small>Equipes</small></button>
+    <button type="button" class="bottom-btn" data-tab="jogadores"><span>👤</span><small>Atletas</small></button>
+    <button type="button" class="bottom-btn" data-tab="estatisticas"><span>📊</span><small>Stats</small></button>
+  </nav>
+
+  <footer class="site-footer">
+    <div class="footer-brand"><span class="brand-mark">☥</span><div><b>FEW</b><small>FEDERAÇÃO EGÍPCIA DE WPS</small></div></div>
+    <p>Competição que constrói história.</p>
+    <span class="footer-copy">© <span id="year"></span> FEW · TODOS OS DIREITOS RESERVADOS</span>
+  </footer>
+
+  <div class="modal" id="detailModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close></div>
+    <article class="modal-panel">
+      <button type="button" class="modal-close" data-close aria-label="Fechar">×</button>
+      <div id="modalContent"></div>
+    </article>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+</body>
+</html>
